@@ -1,5 +1,5 @@
 
-<div class="rounded-md bg-white shadow mx-auto p-4 max-w-md mt-20">
+<div class="rounded-md bg-white shadow mx-auto p-8 max-w-md mt-20">
     <h1>Login</h1>
     <form class="flex flex-col gap-4" method="POST">
         <label class="block w-full">
