@@ -1,9 +1,53 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "id": "e3b735cf-6d0a-4e6a-b9ea-cf749fd952a8",
+  "id": "808bcd45-adae-4cad-8622-4a9de364a69f",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
+    "patents": {
+      "name": "patents",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "user": {
+          "name": "user",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "patents_user_users_email_fk": {
+          "name": "patents_user_users_email_fk",
+          "tableFrom": "patents",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user"
+          ],
+          "columnsTo": [
+            "email"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
     "users": {
       "name": "users",
       "columns": {

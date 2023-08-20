@@ -3,7 +3,7 @@
 
     export let data: LayoutData
 
-    console.log({data})
+    //console.log({data})
 </script>
 
 <div class="flex flex-row gap-2">

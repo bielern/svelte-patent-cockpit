@@ -3,6 +3,11 @@
 ## Database
 
 It runs with sqlite. And the DB should be create automatically.
+To ensure that ON DELETE CASCADE works, turn on the corresponding pragma
+
+```
+PRAGMA foreign_keys = ON;
+```
 
 To create a migration, run
 

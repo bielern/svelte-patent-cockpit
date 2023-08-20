@@ -14,7 +14,7 @@ export type User = InferModel<typeof users_table>
 export const patents_table = sqliteTable('patents', {
     id: integer('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
     name: text('name').notNull(),
-    user: text('user').notNull().references(() => users_table.email),
+    user: text('user').notNull().references(() => users_table.email, { onDelete: 'cascade' }),
 })
 
 export type Patent = InferModel<typeof patents_table>

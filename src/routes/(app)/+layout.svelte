@@ -8,7 +8,6 @@
         {name: 'Portfolio', path: '/portfolio'},
     ]
 
-    // TODO: check for session cookie and show user
     export let data
 </script>
 
