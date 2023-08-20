@@ -1,4 +1,4 @@
-import { Session } from '$lib/session';
+import { Session } from '$lib/server/session';
 
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces

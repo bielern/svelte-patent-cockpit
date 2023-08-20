@@ -1,5 +1,5 @@
 import { redirect, type Handle } from '@sveltejs/kit';
-import { getSession } from '$lib/session';
+import { getSession } from '$lib/server/session';
 import { SESSION_PASSWORD } from '$env/static/private';
 
 

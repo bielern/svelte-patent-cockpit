@@ -1,6 +1,7 @@
 import Iron from '@hapi/iron';
 
 import type { Cookies } from "@sveltejs/kit";
+import { getUser, addUser } from './users';
 
 export type Session = {
     user: string
@@ -24,4 +25,18 @@ export async function getSession(cookies: Cookies, password: string): Promise<Se
     //console.log({password})
     const cookie = cookies.get(session_cookie_name)
     return cookie ? cookie2session(cookie, password) : Promise.resolve(undefined)
+}
+
+// TODO: go to a DB or so
+// TODO: verify password properly
+// NOTE: also creates a new login & session, if user does not exist
+export function createSession(email: string, password: string) {
+    console.log({email, password}) // TODO
+    const user = getUser(email)
+    if (user && user.hashed_password === password) {
+        return {user: email}
+    } else {
+        addUser({email, hashed_password: password}) // TODO
+        return {user: email}
+    }
 }

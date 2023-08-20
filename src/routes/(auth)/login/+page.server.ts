@@ -1,16 +1,6 @@
 import { redirect, fail } from '@sveltejs/kit';
-import { session_cookie_name, session2cookie } from '$lib/session.js';
+import { session_cookie_name, session2cookie, createSession } from '$lib/server/session.js';
 import { SESSION_PASSWORD } from '$env/static/private';
-
-// TODO: go to a DB or so
-function createSession(email: string, password: string) {
-    console.log({email, password}) // TODO
-    if (password === 'password') {
-        return {user: email}
-    } else {
-        return undefined
-    }
-}
 
 export const actions = {
     default: async ({request, cookies}) => {
