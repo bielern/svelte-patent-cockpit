@@ -7,9 +7,9 @@ export const actions = {
         const data = await request.formData();
         const email = data.get('email') as string;
         const password = data.get('password') as string;
-        // TODO: hidden field with login or signup
+        const register = data.get('register') as string === 'true';
 
-        const session = await createSession(email, password)
+        const session = await createSession(email, password, register)
 
         if (session) {
             const cookie = await session2cookie(session, SESSION_PASSWORD)
@@ -18,7 +18,7 @@ export const actions = {
             cookies.set(session_cookie_name, cookie) 
             throw redirect(303, '/')
         } else {
-            return fail(400, {error: 'invalid user or password'})
+            return fail(401, {error: 'invalid user or password'})
         }
     },
 }

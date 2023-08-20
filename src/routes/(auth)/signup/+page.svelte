@@ -2,6 +2,7 @@
 <h1>Sign Up</h1>
 
 <form class="flex flex-col gap-4" method="POST" action="/login">
+  <input type="hidden" name="register" value="true" />
   <label class="block w-full">
     <div class="text-slate-600">Email</div>
     <input class="border border-blue-200 rounded py-2 px-2 w-full" name="email" type="email">
