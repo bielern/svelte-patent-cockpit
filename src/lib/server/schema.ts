@@ -1,6 +1,6 @@
 import type { InferModel } from 'drizzle-orm';
 
-import { sqliteTable, text } from 'drizzle-orm/sqlite-core';
+import { integer, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
 export const users_table = sqliteTable('users', {
     //id: integer().autoIncrement().primaryKey(),
@@ -10,3 +10,11 @@ export const users_table = sqliteTable('users', {
 })
 
 export type User = InferModel<typeof users_table>
+
+export const patents_table = sqliteTable('patents', {
+    id: integer('id', { mode: 'number' }).primaryKey({ autoIncrement: true }),
+    name: text('name').notNull(),
+    user: text('user').notNull().references(() => users_table.email),
+})
+
+export type Patent = InferModel<typeof patents_table>

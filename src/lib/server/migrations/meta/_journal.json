@@ -8,6 +8,13 @@
       "when": 1692529153473,
       "tag": "0000_kind_wrecker",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1692532660000,
+      "tag": "0001_superb_red_wolf",
+      "breakpoints": true
     }
   ]
 }

@@ -8,5 +8,6 @@
 
 <div class="flex flex-row gap-2">
     <div>Hello, {data.user}</div>
-    <a class="text-blue-600 underline" href="/logout">Logout</a>
+    <!-- Don't preload on Logout/Signout button -->
+    <a data-sveltekit-preload-data="tap" class="text-blue-600 underline" href="/logout">Logout</a>
 </div>

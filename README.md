@@ -4,6 +4,12 @@
 
 It runs with sqlite. And the DB should be create automatically.
 
+To create a migration, run
+
+```
+npx drizzle-kit generate:sqlite --schema=src/lib/server/schema.ts --out=src/lib/server/migrations
+```
+
 
 ## Installation
 
