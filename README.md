@@ -1,22 +1,22 @@
-# create-svelte
+# Patent Cockpit Minimal Example with Svelte, Drizzle ORM and iron session management
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+## Database
 
-## Creating a project
+It runs with sqlite. And the DB should be create automatically.
 
-If you're seeing this, you've probably already done this step. Congrats!
 
+## Installation
+
+To install all dependencies, pick one of 
 ```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
+npm install
+pnpm install
+yarn
 ```
 
 ## Developing
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+Once you've installed all dependencies, start a development server:
 
 ```bash
 npm run dev

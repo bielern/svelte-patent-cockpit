@@ -7,8 +7,9 @@ export const actions = {
         const data = await request.formData();
         const email = data.get('email') as string;
         const password = data.get('password') as string;
+        // TODO: hidden field with login or signup
 
-        const session = createSession(email, password)
+        const session = await createSession(email, password)
 
         if (session) {
             const cookie = await session2cookie(session, SESSION_PASSWORD)

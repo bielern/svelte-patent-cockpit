@@ -1,4 +1,5 @@
 import Iron from '@hapi/iron';
+import argon2 from 'argon2'
 
 import type { Cookies } from "@sveltejs/kit";
 import { getUser, addUser } from './users';
@@ -30,13 +31,18 @@ export async function getSession(cookies: Cookies, password: string): Promise<Se
 // TODO: go to a DB or so
 // TODO: verify password properly
 // NOTE: also creates a new login & session, if user does not exist
-export function createSession(email: string, password: string) {
-    console.log({email, password}) // TODO
+export async function createSession(email: string, password: string) {
+    //console.log({email, password}) // TODO
     const user = getUser(email)
-    if (user && user.hashed_password === password) {
-        return {user: email}
+    if (user) {
+        const the_same = await argon2.verify(user.hashed_password, password)
+        if (the_same)
+            return {user: email}
+        else
+            return undefined
     } else {
-        addUser({email, hashed_password: password}) // TODO
+        const hashed_password = await argon2.hash(password)
+        addUser({email, hashed_password})
         return {user: email}
     }
 }
