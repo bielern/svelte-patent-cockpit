@@ -5,7 +5,7 @@
 
     const routes = [
         {name: 'Home', path: '/'},
-        {name: 'About', path: '/about'},
+        {name: 'Portfolio', path: '/portfolio'},
     ]
 
     // TODO: check for session cookie and show user
