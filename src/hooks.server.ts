@@ -3,6 +3,7 @@ import { getSession } from '$lib/server/session';
 import { SESSION_PASSWORD } from '$env/static/private';
 
 
+// all the routes under (auth)
 const unprotected = /^\/(login|logout|signup)$/;
 
 export const handle: Handle = async ({ event, resolve }) => {

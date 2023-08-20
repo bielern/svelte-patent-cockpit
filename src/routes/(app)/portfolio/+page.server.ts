@@ -4,6 +4,7 @@ export const load = async ({locals}) => {
     return { portfolio: getPatents(locals.session.user) }
 }
 
+// This looks a bit weird. There should be better ways. E.g. based on DB Schema or derived type
 export const actions = {
     post: async ({request, locals}) => {
         const formData = await request.formData()

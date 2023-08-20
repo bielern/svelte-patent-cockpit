@@ -8,7 +8,6 @@
 
     let active = false
     $: active = $page.url.pathname === path
-    //$: console.log({path, active})
 </script>
 
 <a class={active ? 'text-gray-900' : 'text-gray-500'} href={path}>{name}</a>
