@@ -1,15 +1,18 @@
+
 interface Patent {
     id?: number;
     name: string;
+    user: string;
 }
 
 let db: Patent[] = [
-    { id: 1, name: 'EP1234567' }
+    { id: 1, name: 'EP1234567', user: 'info@noahbieler.com' }
 ]
 
-function deletePatent({id}: {id: number}) {
-    db = db.filter(patent => patent.id !== id)
+function deletePatent({id, user}: {id: number, user: string}) {
+    db = db.filter(patent => !(patent.id === id && patent.user === user))
 }
+
 function postPatent(patent: Patent) {
     const exists = patent.id !== undefined && db.find(p => p.id === patent.id)
     if (exists) {
@@ -25,22 +28,24 @@ function postPatent(patent: Patent) {
     }
 }
 
-export const load = async () => {
+export const load = async ({locals}) => {
     // TODO: make sure that the user is logged in
-    return { portfolio: db }
+    return { portfolio: db.filter(({user}) => locals.session.user === user) }
 }
 
 // TODO: make sure that the user is logged in
 export const actions = {
-    post: async ({request}) => {
+    post: async ({request, locals}) => {
         const formData = await request.formData()
         const name = formData.get('name') as string
         const id = parseInt(formData.get('id') as string)
-        postPatent({name, id})
+        const {session: {user}} = locals
+        postPatent({name, id, user})
     },
-    delete: async ({request}) => {
+    delete: async ({request, locals}) => {
         const formData = await request.formData()
         const id = parseInt(formData.get('id') as string)
-        deletePatent({id})
+        const {session: {user}} = locals
+        deletePatent({id, user})
     }
 }

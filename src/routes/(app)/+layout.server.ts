@@ -1,11 +1,13 @@
 import { redirect } from '@sveltejs/kit'
 import type { LayoutServerLoad } from './$types.js'
+import { getSession } from '$lib/session.js'
 
 export const load: LayoutServerLoad = async ({ cookies }) => {
-    const sessionid = cookies.get('sessionid')
-    console.log({ sessionid, location: 'server layout' })
-    // TODO: validate cookie
-    if (sessionid === null || sessionid === undefined) throw redirect(303, '/login')
-    const user = sessionid // TODO
-    return { user }
+    const session = await getSession(cookies)
+    console.log({ session, location: 'server layout' })
+
+    if (session === null || session === undefined)
+        throw redirect(303, '/login')
+    else
+        return session
 }
