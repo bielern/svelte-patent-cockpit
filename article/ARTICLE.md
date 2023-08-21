@@ -1,20 +1,5 @@
 # Basic CRUD Web App with SvelteKit with Drizzle ORM, iron auth and Tailwind CSS
 
-* recent article about shortcomings of React
-    https://joshcollinsworth.com/blog/antiquated-react
-* Old article with next.js and ....
-* How is Svelte different?
-  - Has a more "flat" feeling to it
-  - Stores and Reactive instead of props and context being passed down
-  - Less re-renders and thus faster and more lightweight
-  - Big focus on web standards (e.g. for forms)
-      (show login and signup form and also patent add/update/delete )
-* Auth is pretty much the same: argon and iron
-     (show setting/getting cookies and server hooks)
-* DB is a bit different
-  - This time with SQLite
-  - It was a bit annoying with on delete cascade
-
 ## Beyond React
 
 I pretty much grew up as a web developer with React. 
@@ -24,9 +9,10 @@ and everybody hailed them as the modern way of doing things.
 Recently however, I started to really envy a bit the multip page application (MPA)
 architecture (with server side rendering and more).
 
-In a previous article I was looking at how to create a basic CRUD Web App
-using [Next.js 13](https://nextjs.org). I was a nice experience 
-but I wanted to try it also out once with Elixir and Clojure for a comparison.
+[In a previous article](https://www.noahbieler.com/blog/a-crud-web-app-using-nextjs-13-iron-session-and-prisma)
+I was looking at how to create a basic CRUD Web App
+using [Next.js 13](https://nextjs.org). I was a nice experience
+developing it as MPA.
 However, I recently stumbled on 
 [this blog post](https://joshcollinsworth.com/blog/antiquated-react).
 It elaborates 
@@ -34,12 +20,13 @@ how the business-focused JS ecosystem seems to be focus on React --
 just like it is/was on Java with respect to backend/server code.
 At the end, the author suggests to try out some of the other frameworks out there,
 especially [Svelte](https://svelte.dev) and [SvelteKit](https://kit.svelte.dev).
-So instead of Elixir or Clojure, I've decided to try out Svelte and see how it compares.
+This article is now the product of my trying out Svelte and seeing 
+[how it compares to React](https://joshcollinsworth.com/blog/introducing-svelte-comparing-with-react-vue).
 
 ## Example CRUD app with Svelte and Drizzle ORM
 
 Similar to the [last time](https://www.noahbieler.com/blog/a-crud-web-app-using-nextjs-13-iron-session-and-prisma), 
-I have created a example web app with authentication
+I have created an example web app with authentication
 using [`iron`](https://github.com/hapijs/iron), 
 a database connection to [SQLite](https://www.sqlite.org/index.html) 
 using [Drizzle ORM](https://orm.drizzle.team),
@@ -74,21 +61,25 @@ A typical Svelte file looks like this
 ```
 
 In React, the state management heavily relies on the `useState` hook, props being
-passed around and `Context` to avoid said passing around of props if there are
-several layers of components between the "place" where the state lives and where it is 
-used or changed.
+passed around and `Context`. 
+These `Context`s are use to avoid passing around props and state
+from components living high up in the hierarchy (where the state lives) 
+to components deep down in the hierarchy (where the state is used and changed).
 Svelte on the other hand uses two-way binding and stores to achieve the same.
-Reactive variables have to be declared explicitly as such (using `$:`),
-while in React variables living in a component are in general recalculated as the 
-props change. 
+Reactive variables have to be declared explicitly as such (using `$:`).
+In React, on the other hand, variables defined in components are in general 
+recalculated as the props change. 
 Because of this recalculations React might become slow as large parts of the (virtual)
-DOM tree are recalculated although only small portions actually change.
+DOM tree are recalculated although only a small portion actually changes.
+
+## A login screen using a simple HTML form
 
 Svelte tries also to adhere more to web standards for forms etc. similar to like 
-Remix does. 
+[Remix](https://remix.run) does. 
 Thus, you can easily create web apps 
 that do not necessarily rely on Javascript for running.
-In my example app, the page code for the login form looks like this (without the CSS classes)
+In my example app, the page code for the login form looks like this 
+(without the [Tailwind CSS](https://tailwindcss.com) classes)
 ```
 <script lang="ts">
   import {enhance} from '$app/forms';
@@ -114,17 +105,23 @@ In my example app, the page code for the login form looks like this (without the
 {#if form?.error}
 <div>{form.error}</div>
 {/if}
+
+<a href="/signup">No login? Sign up!</a>
 ```
 It's a very basic Login form with email and password. 
 In order to `enhance` it a bit, some Javascript has been added that can 
 help show an error if one is returned from the login end point.
 But the general login flow would work even if the client would have switched off
 Javascript.
+Also, note that you navigate using simple `<a>` links instead of dedicated `<Link>`
+components like for Next.js or Remix.
 
 ![The login screen](./pc-svelte-login.png)
 
+## CRUD with forms
+
 Similar, also the CRUD functionalities for creating, updating and deleting
-patents is implemented with basic forms (again not showing the tailwind CSS classes for styling)
+patents is implemented with basic forms (again not showing the Tailwind CSS classes for styling)
 ```
 <script lang="ts">
     export let data
@@ -154,12 +151,12 @@ patents is implemented with basic forms (again not showing the tailwind CSS clas
 
 ![The portfolio screen](./pc-svelte-portfolio.png)
 
-The `export let data` defines the data that is being returned by the server side loader
+The `export let data` defines the data that is being returned by the server side `load` function (see below)
 and contains the patents array (or the "Portfolio").
 We then loop over each patent and show it with a card with the name.
 The name can be updated or we can delete it.
 At the end of the list, there is a form to add a new patent.
-The formaction field (on the button) or action field (on the form) are used to trigger
+The `formaction` field (on the button) or `action` field (on the form) are used to trigger
 the correct action on the server.
 Again, no particular Javascript is used for handling the form itself.
 
@@ -189,7 +186,7 @@ export const actions = {
 ```
 The `load` function "fills" the `data` in the first file.
 The actions `post` and `delete` are the ones triggered by the forms (as `?/post` and `?/delete`).
-The `locals` variable contains the session data and has been fille by a server hook
+The `locals` variable contains the session data and has been filled by a server hook
 (kind of a "middleware"):
 ```
 import { redirect, type Handle } from '@sveltejs/kit';
@@ -212,7 +209,7 @@ export const handle: Handle = async ({ event, resolve }) => {
     return response;
 }
 ```
-This hook look at every request coming to the server. 
+This hook looks at every request coming to the server. 
 If the request is for a protected page, it checks if there is a valid session cookie. 
 If it is present, the session gets added to the `locals` variable; if not, the 
 client is redirected to the `/login` page.
@@ -243,7 +240,7 @@ export async function cookie2session(cookie: string, password: string): Promise<
     return unsealed;
 }
 ```
-and to create a session we use
+and to create a session or get a session from a cookie, we use
 ```
 import argon2 from 'argon2'
 
@@ -274,8 +271,9 @@ export async function createSession(email: string, password: string, register: b
 
 ## Connecting to a SQLite Database with Drizzle ORM
 
-As a DB solution I wanted to try out Drizzle ORM with SQLite instead of 
-Prisma.io and Postgres.
+As a DB solution I wanted to try out [Drizzle ORM](https://orm.drizzle.team) 
+with [SQLite](https://www.sqlite.org/index.html) instead of 
+[Prisma.io](https://www.prisma.io) and [Postgres](https://www.postgresql.org).
 It felt pretty nice to work with. You simply define the scema with
 ```
 import type { InferModel } from 'drizzle-orm';
