@@ -2,28 +2,28 @@
 
 ## Beyond React
 
-I pretty much grew up as a web developer with React. 
-It is often considered to be the state of the art and I nevery really doubted it much.
-The same with single page applications (SPA). They were the new kid on the block
+Since I started with web development, React was
+and still is considered to be the state of the art and I nevery really doubted it much.
+The same is true for single page applications (SPA). They were the cool kid on the block
 and everybody hailed them as the modern way of doing things.
 Recently however, I started to really envy a bit the multip page application (MPA)
 architecture (with server side rendering and more).
 
 [In a previous article](https://www.noahbieler.com/blog/a-crud-web-app-using-nextjs-13-iron-session-and-prisma)
 I was looking at how to create a basic CRUD Web App
-using [Next.js 13](https://nextjs.org). I was a nice experience
-developing it as MPA.
+using [Next.js 13](https://nextjs.org). 
+It was a nice experience developing it as MPA.
 However, I recently stumbled on 
 [this blog post](https://joshcollinsworth.com/blog/antiquated-react).
-It elaborates 
-how the business-focused JS ecosystem seems to be focus on React -- 
-just like it is/was on Java with respect to backend/server code.
-At the end, the author suggests to try out some of the other frameworks out there,
+It compares React to Java: both became a quasi standard in the industry
+and it seems to be that people are very slow at looking, learning and adopting newer paradigms.
+At the end, the author suggests to try out some of the other Javscript frameworks out there,
 especially [Svelte](https://svelte.dev) and [SvelteKit](https://kit.svelte.dev).
-This article is now the product of my trying out Svelte and seeing 
-[how it compares to React](https://joshcollinsworth.com/blog/introducing-svelte-comparing-with-react-vue).
+This article is now the product of my trying them out and seeing 
+[how they compare to React](https://joshcollinsworth.com/blog/introducing-svelte-comparing-with-react-vue)
+and Nextjs.
 
-## Example CRUD app with Svelte and Drizzle ORM
+## Example CRUD app with Svelte, Iron and Drizzle ORM
 
 Similar to the [last time](https://www.noahbieler.com/blog/a-crud-web-app-using-nextjs-13-iron-session-and-prisma), 
 I have created an example web app with authentication
@@ -39,11 +39,10 @@ I will use some snippets from it to highlight some points in the following secti
 The first thing that stood out for me was that Svelte code feels "flatter"
 than React code. React code seems to always yield very deeply nested code 
 (e.g. the famous provider stack).
-On the other hand, a Svelte file has the code, the html template and the style 
-as three different "sections" within the file. 
 Svelte code is very declarative while React code is basically a big pile of function
 calls. 
-A typical Svelte file looks like this
+A Svelte file has the code, the html template and the style 
+as three different "sections" within the file and looks something like this 
 ```
 <script>
   // here is the JS code
@@ -65,7 +64,7 @@ passed around and `Context`.
 These `Context`s are use to avoid passing around props and state
 from components living high up in the hierarchy (where the state lives) 
 to components deep down in the hierarchy (where the state is used and changed).
-Svelte on the other hand uses two-way binding and stores to achieve the same.
+Svelte on the other hand uses two-way bindings and stores to achieve the same.
 Reactive variables have to be declared explicitly as such (using `$:`).
 In React, on the other hand, variables defined in components are in general 
 recalculated as the props change. 
@@ -74,8 +73,8 @@ DOM tree are recalculated although only a small portion actually changes.
 
 ## A login screen using a simple HTML form
 
-Svelte tries also to adhere more to web standards for forms etc. similar to like 
-[Remix](https://remix.run) does. 
+Svelte tries also to adhere more to web standards for forms etc. --
+ similar to like [Remix](https://remix.run) does. 
 Thus, you can easily create web apps 
 that do not necessarily rely on Javascript for running.
 In my example app, the page code for the login form looks like this 
@@ -120,8 +119,8 @@ components like for Next.js or Remix.
 
 ## CRUD with forms
 
-Similar, also the CRUD functionalities for creating, updating and deleting
-patents is implemented with basic forms (again not showing the Tailwind CSS classes for styling)
+Similar to the login forms, the CRUD functionalities for creating, updating and deleting
+patents are also implemented with basic forms (again not showing the Tailwind CSS classes for styling)
 ```
 <script lang="ts">
     export let data
@@ -221,7 +220,7 @@ One nice thing though is that I didn't need to rely on a wrapper library around
 `iron` as Svelte makes it quite easy to simply use the most basic JS libraries
 without any special React or Nextjs wrapper around it.
 
-Creating the session cookies is done through
+Transforming sessions into cookie strings and back is done as follows:
 ```
 import Iron from '@hapi/iron';
 
@@ -240,7 +239,7 @@ export async function cookie2session(cookie: string, password: string): Promise<
     return unsealed;
 }
 ```
-and to create a session or get a session from a cookie, we use
+and to create a session or get a session from a `Cookie`, we use
 ```
 import argon2 from 'argon2'
 
@@ -274,7 +273,10 @@ export async function createSession(email: string, password: string, register: b
 As a DB solution I wanted to try out [Drizzle ORM](https://orm.drizzle.team) 
 with [SQLite](https://www.sqlite.org/index.html) instead of 
 [Prisma.io](https://www.prisma.io) and [Postgres](https://www.postgresql.org).
-It felt pretty nice to work with. You simply define the scema with
+It felt pretty nice to work with. 
+
+First, I defined the schema for the users and patents table.
+Then, I infered the types for the entities from the schema.
 ```
 import type { InferModel } from 'drizzle-orm';
 
@@ -301,16 +303,17 @@ make sure that you switch on the necessary pragma in SQLite
 ```
 PRAGMA foreign_keys = ON;
 ```
-Another nice thing is that you can derive the types from the schema. And not only the type of 
-when the entity is in the database (`Patent`), but also the type for inserting into the DB (`NewPatent`).
+Another nice thing is that you can infer the types from the schema. 
+And not only the type of when the entity is in the database (`Patent`), 
+but also the type for inserting into the DB (`NewPatent`).
 
 Migrations are handled also quite elegantly. 
-You create them with the `drizzle-kit`:
+You create them with `drizzle-kit`:
 ```
 npx drizzle-kit generate:sqlite --schema=src/lib/server/schema.ts --out=src/lib/server/migrations
 ```
 Once created, they can be run automatically,
-when startup the database connection is created during the server startup
+when the database connection is created during the server startup
 ```
 const sqlite = new Database('sqlite.db');
 export const db: BetterSQLite3Database = drizzle(sqlite);
@@ -320,12 +323,13 @@ migrate(db, { migrationsFolder: 'src/lib/server/migrations' });
 
 ## Conclusion
 
-All in all, it was quite a pleasant experience to create this WebApp.
+All in all, it was quite a pleasant experience to create this web app.
 I could imagine very well how more and more developers will move to Svelte from
 React and that it might be even adopted by the business side at one point.
-Drizzle ORM was also pleasant to work with, although some of the solutions 
-(like the `InferModel` for `insert`) I only found by accident.
+Drizzle ORM was also pleasant to work with, 
+although the documentation is still a bit sparse; 
+some of the solutions (like the `InferModel` for `insert`) I only found by accident.
 
 If you want to try it again yourself, either
 check my code on [GitHub](https://github.com/bielern/svelte-patent-cockpit) or
-get started with the amazing [tutorial](https://learn.svelte.dev/tutorial/welcome-to-svelte) at Svelte.
+get started with the amazing [Svelte tutorial](https://learn.svelte.dev/tutorial/welcome-to-svelte).
