@@ -25,8 +25,8 @@ Recently however, I started to really envy a bit the multip page application (MP
 architecture (with server side rendering and more).
 
 In a previous article I was looking at how to create a basic CRUD Web App
-using Next.js 13. I was a nice experience but I wanted to try it also out once 
-with Elixir and Clojure for a comparison.
+using [Next.js 13](https://nextjs.org). I was a nice experience 
+but I wanted to try it also out once with Elixir and Clojure for a comparison.
 However, I recently stumbled on 
 [this blog post](https://joshcollinsworth.com/blog/antiquated-react).
 It elaborates 
@@ -38,8 +38,11 @@ So instead of Elixir or Clojure, I've decided to try out Svelte and see how it c
 
 ## Example CRUD app with Svelte and Drizzle ORM
 
-Similar to the [last time](TODO), I have created a example web app with authentication
-using [`iron`](TODO), a database connection to [SQLite]() using [Drizzle ORM](),
+Similar to the [last time](https://www.noahbieler.com/blog/a-crud-web-app-using-nextjs-13-iron-session-and-prisma), 
+I have created a example web app with authentication
+using [`iron`](https://github.com/hapijs/iron), 
+a database connection to [SQLite](https://www.sqlite.org/index.html) 
+using [Drizzle ORM](https://orm.drizzle.team),
 and some basic CRUD functionality to add, update and delete enitites (patents here).
 You can find the code [here on GitHub](https://github.com/bielern/svelte-patent-cockpit).
 I will use some snippets from it to highlight some points in the following sections.
@@ -118,6 +121,8 @@ help show an error if one is returned from the login end point.
 But the general login flow would work even if the client would have switched off
 Javascript.
 
+![The login screen](./pc-svelte-login.png)
+
 Similar, also the CRUD functionalities for creating, updating and deleting
 patents is implemented with basic forms (again not showing the tailwind CSS classes for styling)
 ```
@@ -146,6 +151,8 @@ patents is implemented with basic forms (again not showing the tailwind CSS clas
 </form>
 </div>
 ```
+
+![The portfolio screen](./pc-svelte-portfolio.png)
 
 The `export let data` defines the data that is being returned by the server side loader
 and contains the patents array (or the "Portfolio").
@@ -320,3 +327,7 @@ I could imagine very well how more and more developers will move to Svelte from
 React and that it might be even adopted by the business side at one point.
 Drizzle ORM was also pleasant to work with, although some of the solutions 
 (like the `InferModel` for `insert`) I only found by accident.
+
+If you want to try it again yourself, either
+check my code on [GitHub](https://github.com/bielern/svelte-patent-cockpit) or
+get started with the amazing [tutorial](https://learn.svelte.dev/tutorial/welcome-to-svelte) at Svelte.
