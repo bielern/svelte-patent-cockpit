@@ -18,3 +18,4 @@ export const patents_table = sqliteTable('patents', {
 })
 
 export type Patent = InferModel<typeof patents_table>
+export type NewPatent = InferModel<typeof patents_table, 'insert'>

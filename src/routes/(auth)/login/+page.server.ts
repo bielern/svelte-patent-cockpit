@@ -15,7 +15,11 @@ export const actions = {
             const cookie = await session2cookie(session, SESSION_PASSWORD)
             if (!cookie) 
                 throw fail(500, {error: 'failed to create session'})   
-            cookies.set(session_cookie_name, cookie) 
+            cookies.set(session_cookie_name, cookie, {
+                maxAge: 60 * 60 * 24 * 7, // 1 week
+                secure: true,
+                httpOnly: true,
+            }) 
             throw redirect(303, '/')
         } else {
             return fail(401, {error: 'invalid user or password'})
