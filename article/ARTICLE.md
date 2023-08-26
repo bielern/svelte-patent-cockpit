@@ -12,11 +12,11 @@ architecture (with server side rendering and more).
 [In a previous article](https://www.noahbieler.com/blog/a-crud-web-app-using-nextjs-13-iron-session-and-prisma)
 I was looking at how to create a basic CRUD Web App
 using [Next.js 13](https://nextjs.org). 
-It was a nice experience developing it as MPA.
+It was a nice experience developing it as an MPA.
 However, I recently stumbled on 
 [this blog post](https://joshcollinsworth.com/blog/antiquated-react).
 It compares React to Java: both became a quasi standard in the industry
-and it seems to be that people are very slow at looking, learning and adopting newer paradigms.
+and it seems to be that people are very slow at looking at, learning from and adopting to newer paradigms.
 At the end, the author suggests to try out some of the other Javscript frameworks out there,
 especially [Svelte](https://svelte.dev) and [SvelteKit](https://kit.svelte.dev).
 This article is now the product of my trying them out and seeing 
@@ -62,8 +62,8 @@ as three different "sections" within the file and looks something like this
 In React, the state management heavily relies on the `useState` hook, props being
 passed around and `Context`. 
 These `Context`s are use to avoid passing around props and state
-from components living high up in the hierarchy (where the state lives) 
-to components deep down in the hierarchy (where the state is used and changed).
+from components living higher up in the hierarchy (where the state lives) 
+to components further down in the hierarchy (where the state is used and changed).
 Svelte on the other hand uses two-way bindings and stores to achieve the same.
 Reactive variables have to be declared explicitly as such (using `$:`).
 In React, on the other hand, variables defined in components are in general 
@@ -84,7 +84,7 @@ In my example app, the page code for the login form looks like this
   import {enhance} from '$app/forms';
   import  type { ActionData } from './$types'; // auto-generated types
 
-  export let form: ActionData
+  export let form: ActionData  // connected to the enhance
 </script>
 
 <h1>Login</h1>
@@ -113,7 +113,7 @@ help show an error if one is returned from the login end point.
 But the general login flow would work even if the client would have switched off
 Javascript.
 Also, note that you navigate using simple `<a>` links instead of dedicated `<Link>`
-components like for Next.js or Remix.
+components like in Next.js or Remix.
 
 ![The login screen](./pc-svelte-login.png)
 
@@ -123,7 +123,7 @@ Similar to the login forms, the CRUD functionalities for creating, updating and 
 patents are also implemented with basic forms (again not showing the Tailwind CSS classes for styling)
 ```
 <script lang="ts">
-    export let data
+    export let data  // smiliar to the "props" in React
 </script>
 
 <h1>Portfolio</h1>
@@ -152,8 +152,8 @@ patents are also implemented with basic forms (again not showing the Tailwind CS
 
 The `export let data` defines the data that is being returned by the server side `load` function (see below)
 and contains the patents array (or the "Portfolio").
-We then loop over each patent and show it with a card with the name.
-The name can be updated or we can delete it.
+We then loop over each patent and show it in a card with its name.
+The name can be updated or we can delete the whole patent.
 At the end of the list, there is a form to add a new patent.
 The `formaction` field (on the button) or `action` field (on the form) are used to trigger
 the correct action on the server.
@@ -272,7 +272,7 @@ export async function createSession(email: string, password: string, register: b
 
 As a DB solution I wanted to try out [Drizzle ORM](https://orm.drizzle.team) 
 with [SQLite](https://www.sqlite.org/index.html) instead of 
-[Prisma.io](https://www.prisma.io) and [Postgres](https://www.postgresql.org).
+[Prisma.io](https://www.prisma.io) and [Postgres](https://www.postgresql.org) like the last time.
 It felt pretty nice to work with. 
 
 First, I defined the schema for the users and patents table.
@@ -305,7 +305,7 @@ PRAGMA foreign_keys = ON;
 ```
 Another nice thing is that you can infer the types from the schema. 
 And not only the type of when the entity is in the database (`Patent`), 
-but also the type for inserting into the DB (`NewPatent`).
+but also the type when inserting it into the DB (`NewPatent`).
 
 Migrations are handled also quite elegantly. 
 You create them with `drizzle-kit`:

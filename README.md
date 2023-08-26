@@ -1,5 +1,13 @@
 # Patent Cockpit Minimal Example with Svelte, Drizzle ORM and iron session management
 
+## Configuration
+
+Create a `.env.local` file with a session password that is at least 64 characters long
+
+```
+SESSION_PASSWORD=<at least 64 long random string of characters without spaces>
+```
+
 ## Database
 
 It runs with sqlite. And the DB should be create automatically.
